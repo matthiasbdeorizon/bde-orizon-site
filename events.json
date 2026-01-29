@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Premier RDV — Inside Bar",
+    "date": "2026-02-06",
+    "time": "21:30",
+    "place": "Inside Bar — Poitiers",
+    "type": "Afterwork",
+    "price": "Jagger 5€ · Ricard 2€ · Mètre 15€ · Pinte spé 6€ · Ruboro 4€",
+    "desc": "On se retrouve pour un premier moment tous ensemble : ramène tes potes 😄",
+    "linkLabel": "S'inscrire / Infos",
+    "link": "https://example.com"
+  },
+  {
+    "title": "Soirée Thème (à venir)",
+    "date": "2026-02-20",
+    "time": "22:00",
+    "place": "Lieu à confirmer",
+    "type": "Soirée",
+    "price": "À définir",
+    "desc": "Thème + DJ + surprises. On annonce tout très vite 👀",
+    "linkLabel": "Voir sur Insta",
+    "link": "https://instagram.com/"
+  },
+  {
+    "title": "Tournoi (foot / basket)",
+    "date": "2026-03-05",
+    "time": "18:00",
+    "place": "Gymnase / Terrain",
+    "type": "Sport",
+    "price": "Gratuit",
+    "desc": "Inscription par équipe. Ambiance chill + défi inter-promos.",
+    "linkLabel": "Participer",
+    "link": "https://example.com"
+  }
+]
