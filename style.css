@@ -535,3 +535,40 @@ code{
 #contact .card .h2{
   margin-top: 0;
 }
+/* Micro effet WOW sur toutes les cartes */
+.card{
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(24,0,173,.14);
+}
+
+/* Soulignement élégant des titres */
+.section .h2{
+  position: relative;
+  display: inline-block;
+  padding-bottom: 6px;
+}
+
+.section .h2::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 42%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orz-blue), transparent);
+  border-radius: 2px;
+}
+
+/* Boutons plus premium */
+.btn{
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(24,0,173,.18);
+}
