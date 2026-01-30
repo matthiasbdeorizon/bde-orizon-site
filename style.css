@@ -524,3 +524,14 @@ code{
 #contact .card .h2{
   margin-top: 0;
 }
+/* Plus d'air UNIQUEMENT pour "Bons plans & infos" et "Contact" (haut/bas/gauche/droite) */
+#about .card,
+#contact .card{
+  padding: 28px 28px; /* haut/bas | gauche/droite */
+}
+
+/* Titres collés : on enlève la marge du haut */
+#about .card .h3,
+#contact .card .h2{
+  margin-top: 0;
+}
