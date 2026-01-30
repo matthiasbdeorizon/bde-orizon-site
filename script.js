@@ -23,9 +23,9 @@ function renderHelloAssoIframe(src, iframeId) {
             if (!e || !e.origin || !String(e.origin).includes('helloasso.com')) return;
             const dataHeight = e && e.data ? e.data.height : null;
             if (!dataHeight) return;
-            const haWidgetElement = document.getElementById('${iframeId}');
-            if (!haWidgetElement) return;
-            haWidgetElement.style.height = (dataHeight + 2) + 'px';
+            const el = document.getElementById('${iframeId}');
+            if (!el) return;
+            el.style.height = (dataHeight + 2) + 'px';
           } catch (_) {}
         });
       "
@@ -36,18 +36,15 @@ function renderHelloAssoIframe(src, iframeId) {
 async function loadEvents() {
   try {
     const res = await fetch('events.json', { cache: 'no-store' });
-    const events = await res.json();
+    const data = await res.json();
+    const events = Array.isArray(data) ? data : [];
 
-    // sécurité si jamais le JSON n'est pas un tableau
-    const listEvents = Array.isArray(events) ? events : [];
-
-    // Sort by date/time
-    listEvents.sort((a, b) => (a.date + (a.time || "")) > (b.date + (b.time || "")) ? 1 : -1);
+    // tri
+    events.sort((a, b) => (a.date + (a.time || "")) > (b.date + (b.time || "")) ? 1 : -1);
 
     const list = document.getElementById('events-list');
     if (list) {
-      list.innerHTML = listEvents.map((ev, i) => {
-
+      list.innerHTML = events.map((ev, i) => {
         const pricesHtml = Array.isArray(ev.prices) && ev.prices.length
           ? `<ul class="event-prices">${ev.prices.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>`
           : '';
@@ -56,21 +53,19 @@ async function loadEvents() {
           ? `<p class="event-note">${escapeHtml(ev.note)}</p>`
           : '';
 
-        // CTA :
-        // - si helloassoSrc => iframe + bouton insta
-        // - sinon si noCta => rien
-        // - sinon si link => bouton "Infos"
+        // ✅ CTA : respecte noCta
         let ctaHtml = '';
-
         if (ev.helloassoSrc) {
           ctaHtml = `
             <div class="ha-embed">${renderHelloAssoIframe(ev.helloassoSrc, `haWidget-${i}`)}</div>
             ${ev.link ? `<a class="btn btn-ghost full" href="${ev.link}" target="_blank" rel="noreferrer">Infos (Instagram)</a>` : ''}
           `;
-        } else if (ev.noCta) {
-          ctaHtml = ''; // rien du tout (comme tu veux)
+        } else if (ev.noCta === true) {
+          ctaHtml = ''; // rien du tout
         } else if (ev.link) {
           ctaHtml = `<a class="btn btn-secondary full" href="${ev.link}" target="_blank" rel="noreferrer">Infos</a>`;
+        } else {
+          ctaHtml = ''; // pas de lien => pas de bouton
         }
 
         return `
@@ -91,12 +86,12 @@ async function loadEvents() {
       }).join('');
     }
 
-    // Home highlights (3 next)
+    // Home highlights
     const hi = document.getElementById('highlight-events');
     if (hi) {
-      const next3 = listEvents.slice(0, 3);
+      const next3 = events.slice(0, 3);
       hi.innerHTML = next3.map(ev => `
-        <a class="mini-item" href="${(ev.link || 'events.html')}" target="_blank" rel="noreferrer">
+        <a class="mini-item" href="${ev.link || 'events.html'}" target="_blank" rel="noreferrer">
           <div class="mini-title">${escapeHtml(ev.title)}</div>
           <div class="mini-meta">${formatDate(ev.date)}${ev.time ? " • " + escapeHtml(ev.time) : ""} — ${escapeHtml(ev.location || '')}</div>
         </a>
