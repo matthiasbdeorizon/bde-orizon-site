@@ -2,10 +2,10 @@
   {
     "title": "Premier RDV — Inside Bar",
     "date": "2026-02-11",
-    "time": "21:00",
+    "time": "19h-2h",
     "location": "Inside Bar, Poitiers",
     "link": "https://instagram.com/orizon_bde",
-    "tag": "Soirée",
+    "tag": "Sortie bar",
     "prices": [
       "Jagger : 5€",
       "Ricard : 2€",
@@ -16,19 +16,12 @@
     "helloassoSrc": "https://www.helloasso.com/associations/bde-orizon/evenements/soiree-inside-bar/widget-bouton"
   },
   {
-    "title": "Afterwork BDE",
-    "date": "2026-02-20",
-    "time": "18:30",
-    "location": "ISME Poitiers",
+    "title": "R.D.V. au Air Jump — 1ère soirée étudiante du BDE",
+    "date": "2026-03-12",
+    "time": "À venir",
+    "location": "Air Jump, Poitiers",
     "link": "https://instagram.com/orizon_bde",
-    "tag": "Campus"
-  },
-  {
-    "title": "Événement surprise",
-    "date": "2026-03-05",
-    "time": "20:00",
-    "location": "À venir",
-    "link": "https://instagram.com/orizon_bde",
-    "tag": "Fun"
+    "tag": "Soirée",
+    "note": "Organisée avec l'aide des bacheliers RGAO."
   }
 ]
