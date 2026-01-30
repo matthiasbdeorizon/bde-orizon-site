@@ -513,3 +513,14 @@ code{
   transform: translateY(-2px);
   transition: transform .12s ease, box-shadow .12s ease;
 }
+/* Plus d'air UNIQUEMENT pour les cartes "Bons plans & infos" et "Contact" */
+#about .card,
+#contact .card{
+  padding-top: 26px;
+}
+
+/* Les titres ne doivent jamais coller en haut */
+#about .card .h3,
+#contact .card .h2{
+  margin-top: 0;
+}
