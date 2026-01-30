@@ -627,3 +627,30 @@ body {
   transform: translateY(-4px);
   transition: 0.25s ease;
 }
+/* ===== Fond premium (dégradé + glow) ===== */
+body{
+  position: relative;
+  overflow-x: hidden;
+
+  /* dégradé doux */
+  background: radial-gradient(1200px 700px at 15% 10%, rgba(108,99,255,.18), transparent 55%),
+              radial-gradient(900px 600px at 85% 20%, rgba(0,180,255,.14), transparent 55%),
+              radial-gradient(900px 600px at 50% 95%, rgba(160,120,255,.12), transparent 60%),
+              linear-gradient(180deg, #f7f7ff 0%, #ffffff 45%, #fbfbff 100%);
+}
+
+/* bulles floues (effet glow) */
+body::before{
+  content:"";
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(320px 320px at 25% 35%, rgba(108,99,255,.18), transparent 60%),
+    radial-gradient(380px 380px at 70% 30%, rgba(0,180,255,.14), transparent 62%),
+    radial-gradient(420px 420px at 55% 75%, rgba(160,120,255,.14), transparent 65%);
+  filter: blur(18px);
+  opacity: .9;
+}
