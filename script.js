@@ -1,101 +1,124 @@
-// Update footer year automatically
-document.addEventListener('DOMContentLoaded', () => {
-  const yearSpan = document.getElementById('year');
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
-  // Fetch events and render if needed
-  fetchEvents();
-});
-
-// Toggle mobile menu (burger)
 function toggleMenu() {
   const nav = document.querySelector('.nav');
+  if (!nav) return;
   nav.classList.toggle('open');
 }
 
-// Fetch events from JSON file
-async function fetchEvents() {
+function setYear() {
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+}
+
+/**
+ * Rendu du bouton HelloAsso (iframe) avec auto-resize.
+ * On utilise un id unique par carte pour éviter les collisions.
+ */
+function renderHelloAssoIframe(src, iframeId) {
+  return `
+    <iframe
+      id="${iframeId}"
+      allowtransparency="true"
+      src="${src}"
+      style="width: 100%; height: 70px; border: none;"
+      loading="lazy"
+      onload="
+        window.addEventListener('message', function(e) {
+          try {
+            // Mini sécurité : on accepte uniquement HelloAsso
+            if (!e || !e.origin || !String(e.origin).includes('helloasso.com')) return;
+            const dataHeight = e && e.data ? e.data.height : null;
+            if (!dataHeight) return;
+            const haWidgetElement = document.getElementById('${iframeId}');
+            if (!haWidgetElement) return;
+            haWidgetElement.style.height = (dataHeight + 2) + 'px';
+          } catch (_) {}
+        });
+      "
+    ></iframe>
+  `;
+}
+
+async function loadEvents() {
   try {
-    const response = await fetch('events.json');
-    const events = await response.json();
-    renderEvents(events);
-    renderHighlights(events);
-  } catch (err) {
-    console.error('Erreur lors du chargement des événements :', err);
-  }
-}
+    const res = await fetch('events.json', { cache: 'no-store' });
+    const events = await res.json();
 
-// Render event cards on events.html
-function renderEvents(events) {
-  const grid = document.getElementById('events-grid');
-  if (!grid) return;
-  // Filtering
-  const searchInput = document.getElementById('search');
-  const typeSelect = document.getElementById('type');
-  let filtered = events.slice();
-  const filterFn = () => {
-    const query = (searchInput.value || '').toLowerCase();
-    const type = typeSelect.value;
-    filtered = events.filter(ev => {
-      const matchesQuery =
-        ev.title.toLowerCase().includes(query) ||
-        ev.desc.toLowerCase().includes(query) ||
-        ev.place.toLowerCase().includes(query);
-      const matchesType = !type || ev.type === type;
-      return matchesQuery && matchesType;
-    });
-    populateGrid();
-  };
-  if (searchInput && typeSelect) {
-    searchInput.addEventListener('input', filterFn);
-    typeSelect.addEventListener('change', filterFn);
-  }
-  const populateGrid = () => {
-    grid.innerHTML = '';
-    filtered.forEach(ev => {
-      const card = document.createElement('div');
-      card.className = 'event card';
-      card.innerHTML = `
-        <h3 class="h3">${ev.title}</h3>
-        <p class="muted">${formatDate(ev.date)} à ${ev.time} — ${ev.place}</p>
-        ${ev.price ? `<p class="price">${ev.price}</p>` : ''}
-        <p>${ev.desc}</p>
-        <p><strong>Type :</strong> ${ev.type}</p>
-        <a class="btn btn-secondary full" href="${ev.link}" target="_blank" rel="noreferrer">${ev.linkLabel || 'En savoir plus'}</a>
-      `;
-      grid.appendChild(card);
-    });
-    if (filtered.length === 0) {
-      const empty = document.createElement('p');
-      empty.className = 'muted';
-      empty.textContent = 'Aucun événement trouvé.';
-      grid.appendChild(empty);
+    // Sort by date/time
+    events.sort((a, b) => (a.date + (a.time || "")) > (b.date + (b.time || "")) ? 1 : -1);
+
+    // Events page list
+    const list = document.getElementById('events-list');
+    if (list) {
+      list.innerHTML = events.map((ev, i) => {
+        const pricesHtml = Array.isArray(ev.prices) && ev.prices.length
+          ? `<ul class="event-prices">${ev.prices.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>`
+          : '';
+
+        // Si helloassoSrc existe => bouton d'inscription HelloAsso, sinon bouton Détails classique
+        const ctaHtml = ev.helloassoSrc
+          ? `<div class="ha-embed">${renderHelloAssoIframe(ev.helloassoSrc, `haWidget-${i}`)}</div>
+             <a class="btn btn-ghost full" href="${ev.link || 'https://instagram.com/orizon_bde'}" target="_blank" rel="noreferrer">Infos (Instagram)</a>`
+          : `<a class="btn btn-secondary full" href="${ev.link || 'https://instagram.com/orizon_bde'}" target="_blank" rel="noreferrer">Détails</a>`;
+
+        return `
+          <article class="event card">
+            <div class="event-top">
+              <span class="badge">${escapeHtml(ev.tag || 'Event')}</span>
+              <span class="event-date">${formatDate(ev.date)}${ev.time ? " • " + escapeHtml(ev.time) : ""}</span>
+            </div>
+            <h3 class="h3">${escapeHtml(ev.title)}</h3>
+            <p class="muted">${escapeHtml(ev.location || '')}</p>
+            ${pricesHtml}
+            ${ctaHtml}
+          </article>
+        `;
+      }).join('');
     }
-  };
-  populateGrid();
+
+    // Home highlights (3 next)
+    const hi = document.getElementById('highlight-events');
+    if (hi) {
+      const next3 = events.slice(0, 3);
+      hi.innerHTML = next3.map(ev => `
+        <a class="mini-item" href="${ev.link || 'events.html'}" target="_blank" rel="noreferrer">
+          <div class="mini-title">${escapeHtml(ev.title)}</div>
+          <div class="mini-meta">${formatDate(ev.date)}${ev.time ? " • " + escapeHtml(ev.time) : ""} — ${escapeHtml(ev.location || '')}</div>
+        </a>
+      `).join('');
+    }
+
+  } catch (e) {
+    // Fail silently but show a friendly fallback
+    const hi = document.getElementById('highlight-events');
+    if (hi) hi.innerHTML = '<p class="muted">Événements bientôt disponibles.</p>';
+  }
 }
 
-// Render highlight events on index.html (next 3)
-function renderHighlights(events) {
-  const container = document.getElementById('highlight-events');
-  if (!container) return;
-  // Sort by date ascending and take first 3
-  const sorted = events.sort((a, b) => new Date(a.date) - new Date(b.date));
-  const nextThree = sorted.slice(0, 3);
-  nextThree.forEach(ev => {
-    const item = document.createElement('div');
-    item.className = 'mini-item';
-    item.innerHTML = `
-      <strong>${ev.title}</strong><br/>
-      <span class="muted">${formatDate(ev.date)} — ${ev.place}</span>
-    `;
-    container.appendChild(item);
-  });
+function formatDate(iso) {
+  try {
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: 'short' });
+  } catch {
+    return iso;
+  }
 }
 
-// Format date to readable French format
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, s => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[s]));
 }
+
+document.addEventListener('click', (e) => {
+  // Close burger menu when clicking outside on mobile
+  const nav = document.querySelector('.nav');
+  if (!nav || !nav.classList.contains('open')) return;
+  const menu = document.getElementById('menu');
+  const burger = document.querySelector('.burger');
+  if (menu && burger && !menu.contains(e.target) && !burger.contains(e.target)) {
+    nav.classList.remove('open');
+  }
+});
+
+setYear();
+loadEvents();
