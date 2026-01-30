@@ -7,54 +7,43 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="nav">
+  <header class="nav" id="top">
     <a class="brand" href="index.html">
-      <img src="logo-blue.png" alt="BDE Orizon" class="brand-logo" />
-      <span class="brand-text blue">BDE&nbsp;ORIZON</span>
+      <img src="logo-white.png" alt="BDE Orizon" class="brand-logo" />
+      <span class="brand-text">BDE&nbsp;ORIZON</span>
     </a>
-    <nav class="menu">
+    <nav class="menu" id="menu">
       <a class="menu-link" href="index.html">Accueil</a>
       <a class="menu-link is-active" href="events.html">Événements</a>
+      <a class="menu-link" href="index.html#team">Équipe</a>
       <a class="menu-link" href="index.html#contact">Contact</a>
     </nav>
     <button class="burger" aria-label="Ouvrir le menu" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </button>
   </header>
-  <main class="section">
-    <div class="container">
-      <div class="page-head">
-        <h1 class="h1">Prochains événements 🎟️</h1>
-        <p class="lead">Ajoute et modifie tes events dans <code>events.json</code> pour mettre la page à jour.</p>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h1 class="h1">Événements</h1>
+        <p class="muted">Tous les prochains events du BDE Orizon (mis à jour via <code>events.json</code>).</p>
+
+        <div id="events-list" class="events-grid"></div>
+
+        <div class="spacer"></div>
+        <a class="btn btn-ghost" href="index.html">← Retour accueil</a>
       </div>
-      <div class="filters card">
-        <div class="filters-row">
-          <input id="search" class="input" type="search" placeholder="Rechercher (ex: soirée, sport, intégration…)" />
-          <select id="type" class="select">
-            <option value="">Tous les types</option>
-            <option value="Soirée">Soirée</option>
-            <option value="Afterwork">Afterwork</option>
-            <option value="Sport">Sport</option>
-            <option value="Sortie">Sortie</option>
-            <option value="Solidarité">Solidarité</option>
-          </select>
-        </div>
-        <p class="tiny muted">Astuce&nbsp;: mets un lien HelloAsso ou Insta dans chaque fiche event.</p>
-      </div>
-      <div id="events-grid" class="grid-3"></div>
-      <div class="card" style="margin-top:16px;">
-        <h2 class="h2">Tu veux proposer un event&nbsp;?</h2>
-        <p class="muted">Envoie‑nous l’idée (date + lieu + concept), on en parle ensemble 👀</p>
-        <a class="btn btn-primary" href="index.html#contact">Contacter le BDE</a>
-      </div>
-    </div>
+    </section>
   </main>
-  <footer class="footer light">
+
+  <footer class="footer">
     <div class="container footer-row">
-      <span>© <span id="year"></span> BDE Orizon</span>
-      <span class="muted">Page événements à jour ✅</span>
+      <span>© <span id="year"></span> BDE Orizon — ISME Poitiers</span>
+      <span class="muted">Instagram : @orizon_bde</span>
     </div>
   </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
