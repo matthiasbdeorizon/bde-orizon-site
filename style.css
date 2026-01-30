@@ -463,3 +463,53 @@ code{
   .events-grid{ grid-template-columns: 1fr; }
   .contact-row{ grid-template-columns: 1fr; }
 }
+/* =========================
+   TEAM — vignettes rondes
+   ========================= */
+
+#team .person{
+  padding: 18px;
+}
+
+#team .avatar-img{
+  width: 86px;          /* taille de la vignette */
+  height: 86px;
+  object-fit: cover;    /* remplit le cercle */
+  border-radius: 999px; /* rond */
+  display: block;
+  margin: 0 auto 12px;
+
+  background: #fff;     /* au cas où la transparence laisse du vide */
+  border: 2px solid rgba(24,0,173,.18);
+  box-shadow: 0 10px 24px rgba(17,19,24,.10);
+
+  /* léger halo Orizon discret */
+  filter: drop-shadow(0 10px 20px rgba(24,0,173,.18));
+}
+
+#team .person-name{
+  font-weight: 900;
+  font-size: 1.08rem;
+  margin-top: 2px;
+}
+
+#team .person-role{
+  margin-top: 6px;
+  color: var(--orz-blue);
+  font-weight: 850;
+  font-size: .95rem;
+  line-height: 1.25;
+}
+
+#team .person-class{
+  margin-top: 6px;
+  font-size: .9rem;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+/* Petit effet au survol */
+#team .person:hover{
+  transform: translateY(-2px);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
