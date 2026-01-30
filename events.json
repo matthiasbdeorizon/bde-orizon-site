@@ -15,12 +15,13 @@
     ],
     "helloassoSrc": "https://www.helloasso.com/associations/bde-orizon/evenements/soiree-inside-bar/widget-bouton"
   },
-{
-  "title": "1re soirée — Air Jump",
-  "date": "2026-03-12",
-  "time": "À venir",
-  "location": "Air Jump, Poitiers",
-  "link": "https://instagram.com/orizon_bde",
-  "tag": "Soirée",
-  "note": "Soirée co-organisée avec les Bachelors RGAO, avec le soutien du BDE. Inscriptions très bientôt 👀"
-}
+  {
+    "title": "1re soirée — Air Jump",
+    "date": "2026-03-12",
+    "time": "À venir",
+    "location": "Air Jump, Poitiers",
+    "link": "https://instagram.com/orizon_bde",
+    "tag": "Soirée",
+    "note": "Soirée co-organisée avec les Bachelors RGAO, avec le soutien du BDE. Inscriptions très bientôt 👀"
+  }
+]
