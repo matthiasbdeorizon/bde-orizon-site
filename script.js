@@ -1,133 +1,110 @@
 function toggleMenu() {
-  const nav = document.querySelector('.nav');
-  if (!nav) return;
-  nav.classList.toggle('open');
+  document.querySelector(".nav")?.classList.toggle("open");
 }
 
-function setYear() {
-  const y = document.getElementById('year');
-  if (y) y.textContent = new Date().getFullYear();
+function formatDate(dateStr) {
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr || "";
+    return d.toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short" });
+  } catch {
+    return dateStr || "";
+  }
 }
 
-function renderHelloAssoIframe(src, iframeId) {
+function buildEventCard(e) {
+  const prices = Array.isArray(e.prices) ? e.prices : [];
+  const badge = e.badge || "Événement";
+  const dateTxt = e.date ? `${formatDate(e.date)} · ${e.time || ""}`.trim() : (e.time || "");
+
+  const pricesHtml = prices.length
+    ? `<ul class="event-prices">${prices.map(p => `<li>${p}</li>`).join("")}</ul>`
+    : "";
+
+  const noteHtml = e.note ? `<p class="event-note">${e.note}</p>` : "";
+
+  let ctas = "";
+  if (e.link && e.linkLabel) {
+    ctas += `<a class="btn btn-primary full" href="${e.link}" target="_blank" rel="noreferrer">${e.linkLabel}</a>`;
+  }
+  if (e.secondaryLink && e.secondaryLabel) {
+    ctas += `<a class="btn btn-secondary full" href="${e.secondaryLink}" target="_blank" rel="noreferrer">${e.secondaryLabel}</a>`;
+  }
+
   return `
-    <iframe
-      id="${iframeId}"
-      allowtransparency="true"
-      src="${src}"
-      style="width: 100%; height: 70px; border: none;"
-      loading="lazy"
-      onload="
-        window.addEventListener('message', function(e) {
-          try {
-            if (!e || !e.origin || !String(e.origin).includes('helloasso.com')) return;
-            const dataHeight = e && e.data ? e.data.height : null;
-            if (!dataHeight) return;
-            const el = document.getElementById('${iframeId}');
-            if (!el) return;
-            el.style.height = (dataHeight + 2) + 'px';
-          } catch (_) {}
-        });
-      "
-    ></iframe>
+    <article class="card event">
+      <div class="event-top">
+        <span class="badge">${badge}</span>
+        <span class="event-date">${dateTxt}</span>
+      </div>
+      <h3 class="h3">${e.title || "Sans titre"}</h3>
+      <p class="muted">${e.location || ""}</p>
+      ${pricesHtml}
+      ${noteHtml}
+      <div class="spacer"></div>
+      ${ctas}
+    </article>
   `;
 }
 
+async function fetchEventsJSON() {
+  // URL fiable : prend l'URL de la page courante (events.html) et résout events.json au même endroit
+  const url = new URL("events.json", window.location.href).toString();
+
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`HTTP ${res.status} sur ${url}`);
+  return await res.json();
+}
+
 async function loadEvents() {
+  const eventsList = document.getElementById("events-list");
+  if (!eventsList) return;
+
   try {
-    const res = await fetch('events.json', { cache: 'no-store' });
-    const data = await res.json();
-    const events = Array.isArray(data) ? data : [];
+    const data = await fetchEventsJSON();
 
-    // tri
-    events.sort((a, b) => (a.date + (a.time || "")) > (b.date + (b.time || "")) ? 1 : -1);
-
-    const list = document.getElementById('events-list');
-    if (list) {
-      list.innerHTML = events.map((ev, i) => {
-        const pricesHtml = Array.isArray(ev.prices) && ev.prices.length
-          ? `<ul class="event-prices">${ev.prices.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>`
-          : '';
-
-        const noteHtml = ev.note
-          ? `<p class="event-note">${escapeHtml(ev.note)}</p>`
-          : '';
-
-        // ✅ CTA : respecte noCta
-        let ctaHtml = '';
-        if (ev.helloassoSrc) {
-          ctaHtml = `
-            <div class="ha-embed">${renderHelloAssoIframe(ev.helloassoSrc, `haWidget-${i}`)}</div>
-            ${ev.link ? `<a class="btn btn-ghost full" href="${ev.link}" target="_blank" rel="noreferrer">Infos (Instagram)</a>` : ''}
-          `;
-        } else if (ev.noCta === true) {
-          ctaHtml = ''; // rien du tout
-        } else if (ev.link) {
-          ctaHtml = `<a class="btn btn-secondary full" href="${ev.link}" target="_blank" rel="noreferrer">Infos</a>`;
-        } else {
-          ctaHtml = ''; // pas de lien => pas de bouton
-        }
-
-        return `
-          <article class="event card">
-            <div class="event-top">
-              <span class="badge">${escapeHtml(ev.tag || 'Event')}</span>
-              <span class="event-date">${formatDate(ev.date)}${ev.time ? " • " + escapeHtml(ev.time) : ""}</span>
-            </div>
-
-            <h3 class="h3">${escapeHtml(ev.title)}</h3>
-            <p class="muted">${escapeHtml(ev.location || '')}</p>
-
-            ${noteHtml}
-            ${pricesHtml}
-            ${ctaHtml}
-          </article>
-        `;
-      }).join('');
+    const events = Array.isArray(data.events) ? data.events : [];
+    if (!events.length) {
+      eventsList.innerHTML = `<div class="card" style="padding:18px;">Aucun événement trouvé dans <code>events.json</code>.</div>`;
+      return;
     }
 
-    // Home highlights
-    const hi = document.getElementById('highlight-events');
-    if (hi) {
-      const next3 = events.slice(0, 3);
-      hi.innerHTML = next3.map(ev => `
-        <a class="mini-item" href="${ev.link || 'events.html'}" target="_blank" rel="noreferrer">
-          <div class="mini-title">${escapeHtml(ev.title)}</div>
-          <div class="mini-meta">${formatDate(ev.date)}${ev.time ? " • " + escapeHtml(ev.time) : ""} — ${escapeHtml(ev.location || '')}</div>
-        </a>
-      `).join('');
-    }
-
-  } catch (e) {
-    const hi = document.getElementById('highlight-events');
-    if (hi) hi.innerHTML = '<p class="muted">Événements bientôt disponibles.</p>';
+    eventsList.innerHTML = events.map(buildEventCard).join("");
+  } catch (err) {
+    console.error("Erreur chargement events:", err);
+    eventsList.innerHTML = `
+      <div class="card" style="padding:18px;">
+        Impossible de charger <code>events.json</code>.<br>
+        Vérifie que <code>events.json</code> est bien dans le même dossier que <code>events.html</code> sur GitHub Pages.
+      </div>
+    `;
   }
 }
 
-function formatDate(iso) {
+async function loadHighlights() {
+  const highlight = document.getElementById("highlight-events");
+  if (!highlight) return;
+
   try {
-    const d = new Date(iso + 'T00:00:00');
-    return d.toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: 'short' });
-  } catch {
-    return iso;
+    const data = await fetchEventsJSON();
+    const events = Array.isArray(data.events) ? data.events : [];
+    const top = events.slice(0, 2);
+
+    highlight.innerHTML = top.map(e => `
+      <a class="mini-item" href="events.html">
+        <div class="mini-title">${e.title || ""}</div>
+        <div class="mini-meta">${formatDate(e.date)} · ${e.time || ""} — ${e.location || ""}</div>
+      </a>
+    `).join("");
+  } catch (err) {
+    console.error("Erreur highlights:", err);
   }
 }
 
-function escapeHtml(str) {
-  return String(str || '').replace(/[&<>"']/g, s => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[s]));
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const y = document.getElementById("year");
+  if (y) y.textContent = new Date().getFullYear();
 
-document.addEventListener('click', (e) => {
-  const nav = document.querySelector('.nav');
-  if (!nav || !nav.classList.contains('open')) return;
-  const menu = document.getElementById('menu');
-  const burger = document.querySelector('.burger');
-  if (menu && burger && !menu.contains(e.target) && !burger.contains(e.target)) {
-    nav.classList.remove('open');
-  }
+  loadHighlights();
+  loadEvents();
 });
-
-setYear();
-loadEvents();
