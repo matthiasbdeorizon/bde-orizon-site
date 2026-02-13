@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <!-- Page title updated to reflect Orizon tagline -->
   <title>BDE Orizon – ISME Poitiers | Soirées & événements étudiants</title>
-<meta name="description" content="BDE Orizon (ISME Poitiers) : soirées, événements étudiants, bons plans et vie de campus. Découvre les prochains rendez-vous et contacte l’équipe." />
-<meta name="robots" content="index,follow" />
+  <meta name="description" content="BDE Orizon (ISME Poitiers) : soirées, événements étudiants, bons plans et vie de campus. Découvre les prochains rendez-vous et contacte l’équipe." />
+  <meta name="robots" content="index,follow" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <!-- Navigation -->
   <header class="nav">
@@ -16,12 +16,14 @@
       <img src="logo-white.png" alt="BDE Orizon" class="brand-logo" />
       <span class="brand-text">BDE&nbsp;ORIZON</span>
     </a>
+
     <nav class="menu">
       <a class="menu-link is-active" href="index.html">Accueil</a>
       <a class="menu-link" href="events.html">Événements</a>
       <a class="menu-link" href="#team">Équipe</a>
       <a class="menu-link" href="#contact">Contact</a>
     </nav>
+
     <button class="burger" aria-label="Ouvrir le menu" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </button>
@@ -31,20 +33,22 @@
     <!-- Hero section -->
     <section class="hero">
       <div class="hero-bg"></div>
+
       <div class="container hero-grid">
         <div class="hero-copy">
-          <!-- Updated tagline to better represent the BDE spirit -->
           <p class="pill">Le BDE qui fédère et fait vibrer le campus</p>
-          <!-- New hero headline reflecting the user’s suggestion -->
           <h1 class="h1"><span class="accent">Orizon</span> : plus qu’un BDE, une expérience</h1>
+
           <p class="lead">
             Soirées, événements, bons plans et projets … on est là pour te faire passer une année
-            stylée (et pas seulement survivre aux cours !).
+            stylée (et pas seulement survivre aux cours).
           </p>
+
           <div class="cta-row">
             <a class="btn btn-primary" href="events.html">Voir les prochains events</a>
             <a class="btn btn-ghost" href="#about">Découvrir le BDE</a>
           </div>
+
           <div class="stats">
             <div class="stat">
               <div class="stat-n">+20</div>
@@ -63,7 +67,7 @@
 
         <div class="hero-card">
           <div class="glass">
-            <h2 class="h2">🔥 À la une</h2>
+            <h2 class="h2">À la une</h2>
             <p class="muted">Les 2 prochains rendez-vous</p>
             <div id="highlight-events" class="mini-list"></div>
             <a class="btn btn-secondary full" href="events.html">Tout voir</a>
@@ -81,6 +85,7 @@
             Orizon est une équipe d’étudiants qui organise des événements accessibles,
             crée du lien entre les promotions et met l’ambiance sur le campus de l’ISME à Poitiers.
           </p>
+
           <div class="chips">
             <span class="chip">Festif</span>
             <span class="chip">Fédérateur</span>
@@ -111,63 +116,81 @@
         <div class="grid-3">
 
           <div class="person card">
-            <img class="avatar-img" src="img/team/team-matthias.png" alt="Matthias">
+            <div class="team-photo-wrapper">
+              <img class="avatar-img team-photo" src="img/team/team-matthias.png" alt="Matthias">
+            </div>
             <div class="person-name">Matthias</div>
             <div class="person-role">Président</div>
             <div class="person-class">Bachelor RACM</div>
           </div>
 
           <div class="person card">
-            <img class="avatar-img" src="img/team/team-lola.png" alt="Lola">
+            <div class="team-photo-wrapper">
+              <img class="avatar-img team-photo" src="img/team/team-lola.png" alt="Lola">
+            </div>
             <div class="person-name">Lola</div>
             <div class="person-role">Vice-présidente • Chargée de communication</div>
             <div class="person-class">BTS Com 2</div>
           </div>
 
           <div class="person card">
-            <img class="avatar-img" src="img/team/team-jade.png" alt="Jade">
+            <div class="team-photo-wrapper">
+              <img class="avatar-img team-photo" src="img/team/team-jade.png" alt="Jade">
+            </div>
             <div class="person-name">Jade</div>
             <div class="person-role">Adjointe communication</div>
             <div class="person-class">BTS MCO 1</div>
           </div>
 
           <div class="person card">
-            <img class="avatar-img" src="img/team/team-evan.png" alt="Evan">
+            <div class="team-photo-wrapper">
+              <img class="avatar-img team-photo" src="img/team/team-evan.png" alt="Evan">
+            </div>
             <div class="person-name">Evan</div>
             <div class="person-role">Chargé de partenariats</div>
             <div class="person-class">Bachelor RACM</div>
           </div>
 
           <div class="person card">
-            <img class="avatar-img" src="img/team/team-franc.png" alt="Franc">
+            <div class="team-photo-wrapper">
+              <img class="avatar-img team-photo" src="img/team/team-franc.png" alt="Franck">
+            </div>
             <div class="person-name">Franck</div>
             <div class="person-role">Adjoint chargé de partenariats</div>
             <div class="person-class">Bachelor RACM</div>
           </div>
 
           <div class="person card">
-            <img class="avatar-img" src="img/team/team-marylou.png" alt="Marylou">
+            <div class="team-photo-wrapper">
+              <img class="avatar-img team-photo" src="img/team/team-marylou.png" alt="Marylou">
+            </div>
             <div class="person-name">Marylou</div>
             <div class="person-role">Secrétaire</div>
             <div class="person-class">BTS NDRC 1</div>
           </div>
 
           <div class="person card">
-            <img class="avatar-img" src="img/team/team-lou.png" alt="Lou">
+            <div class="team-photo-wrapper">
+              <img class="avatar-img team-photo" src="img/team/team-lou.png" alt="Lou">
+            </div>
             <div class="person-name">Lou</div>
             <div class="person-role">Secrétaire adjointe</div>
             <div class="person-class">BTS MCO 1</div>
           </div>
 
           <div class="person card">
-            <img class="avatar-img" src="img/team/team-valentin.png" alt="Valentin">
+            <div class="team-photo-wrapper">
+              <img class="avatar-img team-photo" src="img/team/team-valentin.png" alt="Valentin">
+            </div>
             <div class="person-name">Valentin</div>
             <div class="person-role">Trésorier</div>
             <div class="person-class">BTS MCO 1</div>
           </div>
 
           <div class="person card">
-            <img class="avatar-img" src="img/team/team-hugo.png" alt="Hugo">
+            <div class="team-photo-wrapper">
+              <img class="avatar-img team-photo" src="img/team/team-hugo.png" alt="Hugo">
+            </div>
             <div class="person-name">Hugo</div>
             <div class="person-role">Bénévole</div>
             <div class="person-class">BTS MCO 1</div>
@@ -182,18 +205,18 @@
       <div class="container split">
         <div class="card">
           <h2 class="h2">Contact</h2>
-          <p class="muted">Une question&nbsp;? Une idée d’event&nbsp;? Tu veux rejoindre le BDE&nbsp;?</p>
+          <p class="muted">Une question ? Une idée d’event ? Tu veux rejoindre le BDE ?</p>
+
           <div class="contact-row">
-            <!-- Contact email updated to real address -->
             <a class="btn btn-primary full" href="mailto:isme.bde@gmail.com">Nous écrire</a>
-            <!-- Instagram handle updated -->
             <a class="btn btn-ghost full" href="https://instagram.com/orizon_bde" target="_blank" rel="noreferrer">Instagram</a>
           </div>
+
           <p class="tiny muted"></p>
         </div>
 
         <div class="quote">
-          <p class="quote-text">« On a une règle&nbsp;: si c’est cool et que ça rassemble, on le fait. »</p>
+          <p class="quote-text">« On a une règle : si c’est cool et que ça rassemble, on le fait. »</p>
           <p class="quote-by">— BDE Orizon</p>
         </div>
       </div>
@@ -203,7 +226,7 @@
   <footer class="footer">
     <div class="container footer-row">
       <span>© <span id="year"></span> BDE Orizon — ISME Poitiers</span>
-      <span class="muted">Fait avec&nbsp;💙 et un peu de café</span>
+      <span class="muted">Fait avec amour et un peu de café</span>
     </div>
   </footer>
 
