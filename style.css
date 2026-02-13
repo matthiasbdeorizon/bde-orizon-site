@@ -683,21 +683,20 @@ body::before{
   background-size: 220px 220px;
 }
 /* Avatar cercle fond bleu studio */
-
 .avatar-img {
   width: 130px;
   height: 130px;
-  object-fit: cover;
   border-radius: 50%;
-  padding: 8px; /* espace autour de la photo */
-  
+  padding: 6px;
+
+  /* Dégradé bleu dans le cercle */
   background: radial-gradient(
     circle at 30% 30%,
-    #4f6cff 0%,
-    #2d3fa3 45%,
-    #0e1a4d 100%
+    #3f5efb 0%,
+    #1b2a78 60%,
+    #0b1240 100%
   );
 
-  border: 4px solid #ffffff;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
